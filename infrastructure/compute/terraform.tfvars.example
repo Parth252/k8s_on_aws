@@ -1,0 +1,4 @@
+# Safe, shared defaults only. Copy to terraform.tfvars for local overrides.
+# terraform.tfvars remains untracked.
+aws_region   = "ap-south-1"
+project_name = "k8s-learning"

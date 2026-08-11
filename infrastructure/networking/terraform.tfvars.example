@@ -1,0 +1,4 @@
+# This file contains only safe example values. Copy it to terraform.tfvars to
+# override values locally; terraform.tfvars is ignored by Git.
+aws_region   = "ap-south-1"
+project_name = "k8s-learning"

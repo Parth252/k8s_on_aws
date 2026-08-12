@@ -4,10 +4,10 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-variable "networking_state_path" {
-  description = "Path to the networking Terraform state. Use an S3 backend later when collaborating."
+variable "terraform_state_bucket_name" {
+  description = "Private S3 bucket name holding Terraform state. Supply it with TF_VAR_terraform_state_bucket_name; do not commit it."
   type        = string
-  default     = "../networking/terraform.tfstate"
+  sensitive   = true
 }
 
 variable "project_name" {

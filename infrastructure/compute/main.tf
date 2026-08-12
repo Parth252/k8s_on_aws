@@ -1,8 +1,12 @@
 data "terraform_remote_state" "networking" {
-  backend = "local"
+  backend = "s3"
 
   config = {
-    path = var.networking_state_path
+    bucket       = var.terraform_state_bucket_name
+    key          = "k8s-on-aws/networking/terraform.tfstate"
+    region       = var.aws_region
+    encrypt      = true
+    use_lockfile = true
   }
 }
 

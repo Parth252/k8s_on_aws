@@ -1,6 +1,9 @@
 terraform {
   required_version = ">= 1.5.0"
 
+  # Private backend values are supplied at `terraform init`, never committed.
+  backend "s3" {}
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

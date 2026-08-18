@@ -4,10 +4,14 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-variable "terraform_state_bucket_name" {
-  description = "Private S3 bucket name holding Terraform state. Supply it with TF_VAR_terraform_state_bucket_name; do not commit it."
+variable "state_bucket" {
+  description = "Private S3 bucket name holding Terraform state. Supply it in the ignored infra-values.tfvars file."
   type        = string
-  sensitive   = true
+}
+
+variable "state_key_prefix" {
+  description = "S3 key prefix for this project's Terraform state."
+  type        = string
 }
 
 variable "project_name" {
@@ -16,8 +20,14 @@ variable "project_name" {
   default     = "k8s-learning"
 }
 
-variable "instance_type" {
-  description = "Instance type for every node. t3a.small is the kubeadm minimum for this learning cluster."
+variable "control_plane_instance_type" {
+  description = "Instance type for every control-plane node."
+  type        = string
+  default     = "t3a.small"
+}
+
+variable "worker_instance_type" {
+  description = "Instance type for every worker node."
   type        = string
   default     = "t3a.small"
 }

@@ -2,8 +2,8 @@ data "terraform_remote_state" "networking" {
   backend = "s3"
 
   config = {
-    bucket       = var.terraform_state_bucket_name
-    key          = "k8s-on-aws/networking/terraform.tfstate"
+    bucket       = var.state_bucket
+    key          = "${var.state_key_prefix}/networking/terraform.tfstate"
     region       = var.aws_region
     encrypt      = true
     use_lockfile = true
@@ -16,8 +16,8 @@ data "aws_ssm_parameter" "amazon_linux_2023" {
 
 locals {
   nodes = merge(
-    { for index in range(3) : "control-plane-${index + 1}" => { role = "control-plane", subnet_index = index } },
-    { for index in range(3) : "worker-${index + 1}" => { role = "worker", subnet_index = index } },
+    { for index in range(3) : "control-plane-${index + 1}" => { role = "control-plane", subnet_index = index, instance_type = var.control_plane_instance_type } },
+    { for index in range(3) : "worker-${index + 1}" => { role = "worker", subnet_index = index, instance_type = var.worker_instance_type } },
   )
 
   common_tags = merge(
@@ -60,7 +60,7 @@ resource "aws_instance" "node" {
   for_each = local.nodes
 
   ami                    = data.aws_ssm_parameter.amazon_linux_2023.value
-  instance_type          = var.instance_type
+  instance_type          = each.value.instance_type
   subnet_id              = data.terraform_remote_state.networking.outputs.public_subnet_ids[each.value.subnet_index]
   vpc_security_group_ids = [data.terraform_remote_state.networking.outputs.node_security_group_id]
   iam_instance_profile   = aws_iam_instance_profile.ssm.name

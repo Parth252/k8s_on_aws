@@ -39,6 +39,8 @@ override.tf.json
 *.tfvars
 *.tfvars.json
 !*.tfvars.example
+/config.yaml
+/.generated/
 
 # Personal credentials and private keys
 .env

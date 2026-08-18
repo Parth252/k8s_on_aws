@@ -18,11 +18,10 @@ The Session Manager plugin must be installed on the computer running the command
 Apply `../networking` first, then:
 
 ```bash
-terraform init
-terraform plan
-terraform apply
+./scripts/deploy-infra.sh compute plan
+./scripts/deploy-infra.sh compute apply
 ```
 
-This directory reads the local networking state for learning purposes. State is
-ignored by Git. Before collaborating or automating deployments, migrate both
-stacks to an encrypted remote backend.
+This directory reads networking outputs from remote S3 state. Create the ignored
+`config.yaml` from `config.yaml.example` before running the script. The script
+uses yq v4 to generate the Terraform values file.

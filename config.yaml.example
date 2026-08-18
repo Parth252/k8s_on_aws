@@ -1,0 +1,20 @@
+# Copy this file to config.yaml and replace the placeholder values.
+# config.yaml is ignored by Git. Do not put AWS credentials in it; authenticate
+# through your AWS CLI profile, IAM Identity Center, or environment credentials.
+
+project:
+  name: k8s-learning
+
+aws:
+  region: ap-south-1
+
+  state_bucket:
+    name: replace-with-your-private-state-bucket
+    key_prefix: k8s-on-aws
+
+  compute:
+    control_plane:
+      instance_type: t3a.small
+    worker:
+      instance_type: t3a.small
+    root_volume_size: 20

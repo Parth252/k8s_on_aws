@@ -14,11 +14,10 @@ inbound rules, so those addresses do not expose SSH or Kubernetes services.
 ## Apply
 
 ```bash
-terraform init
-terraform plan
-terraform apply
+./scripts/deploy-infra.sh networking plan
+./scripts/deploy-infra.sh networking apply
 ```
 
-Terraform state and `terraform.tfvars` are intentionally ignored by Git. Never
-commit access keys, private keys, account IDs, state files, or local variable
-files.
+Create the ignored `config.yaml` from `config.yaml.example` before running the
+script. The script uses yq v4 to generate the Terraform values file. Terraform
+state and local values are intentionally ignored by Git.

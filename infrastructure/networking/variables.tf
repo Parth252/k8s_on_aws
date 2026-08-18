@@ -4,6 +4,16 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
+variable "state_bucket" {
+  description = "Private S3 bucket name holding Terraform state; configured by the ignored infra-values.tfvars file."
+  type        = string
+}
+
+variable "state_key_prefix" {
+  description = "S3 key prefix for this project's Terraform state."
+  type        = string
+}
+
 variable "project_name" {
   description = "Prefix applied to resource names and tags."
   type        = string

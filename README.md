@@ -14,36 +14,38 @@ Apply networking before compute. The initial cluster uses six `t3a.small`
 instances in Mumbai (`ap-south-1`): three control-plane nodes and three workers.
 Session Manager provides terminal access without exposing SSH.
 
-## Private Terraform backend setup
+## Deploying infrastructure
 
-The Terraform state bucket and the SSM parameter that names it are personal
-infrastructure values, so they are deliberately not present in this repository.
-In each terminal session, set these local values:
+Copy the safe template and add your own account-specific values:
 
 ```bash
-export AWS_REGION="ap-south-1"
-export TF_STATE_BUCKET_PARAMETER="/your/private/terraform/state-bucket-name"
-export TF_VAR_terraform_state_bucket_name="$(aws ssm get-parameter \
-  --name "$TF_STATE_BUCKET_PARAMETER" \
-  --region "$AWS_REGION" \
-  --query 'Parameter.Value' \
-  --output text)"
+cp config.yaml.example config.yaml
 ```
 
-Initialize each stack through the helper. It fetches the bucket name locally and
-enables Terraform's native S3 lockfile; no DynamoDB table is required.
+`config.yaml` is organized under `project` and `aws`: region, state bucket,
+control-plane sizing, worker sizing, and shared compute storage. It is
+deliberately ignored by Git. Do not put AWS
+credentials in it; authenticate with your AWS CLI profile, IAM Identity Center,
+or environment credentials.
+
+The deploy script uses [yq v4](https://github.com/mikefarah/yq) to generate
+ignored, stack-specific Terraform values files from `config.yaml`, initializes
+the S3 backend with the same values, enables native S3 locking, then runs the
+requested Terraform command:
 
 ```bash
-./scripts/init-backend.sh networking
-./scripts/init-backend.sh compute
+./scripts/deploy-infra.sh networking plan
+./scripts/deploy-infra.sh networking apply
+./scripts/deploy-infra.sh compute plan
+./scripts/deploy-infra.sh compute apply
 ```
 
-The state keys are `k8s-on-aws/networking/terraform.tfstate` and
-`k8s-on-aws/compute/terraform.tfstate`.
+Networking must be applied before compute. The default state keys are
+`k8s-on-aws/networking/terraform.tfstate` and
+`k8s-on-aws/compute/terraform.tfstate`; change the prefix locally if desired.
 
 ## Public-repository safety
 
-Never commit Terraform state, `*.tfvars`, access keys, private keys, account
-IDs, S3 bucket names, SSM parameter paths, or other personal values. The
-included `.gitignore` excludes these files; use `terraform.tfvars.example` files
-only as safe templates.
+Never commit Terraform state, `config.yaml`, generated values files, `*.tfvars`, access keys,
+private keys, account IDs, S3 bucket names, SSM parameter paths, or other
+personal values. The included `.gitignore` excludes local Terraform inputs.

@@ -44,14 +44,14 @@ state_key_prefix="$(yq -er '.aws.state_bucket.key_prefix' "$config_file")"
 
 mkdir -p "$(dirname "$generated_values_file")"
 if [[ "$stack" == "networking" ]]; then
-  yq -o=json '{
+  yq '{
     "aws_region": .aws.region,
     "state_bucket": .aws.state_bucket.name,
     "state_key_prefix": .aws.state_bucket.key_prefix,
     "project_name": .project.name
   }' "$config_file" > "$generated_values_file"
 else
-  yq -o=json '{
+  yq '{
     "aws_region": .aws.region,
     "state_bucket": .aws.state_bucket.name,
     "state_key_prefix": .aws.state_bucket.key_prefix,

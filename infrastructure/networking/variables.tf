@@ -37,6 +37,17 @@ variable "public_subnet_cidrs" {
   }
 }
 
+variable "private_subnet_cidrs" {
+  description = "Three non-overlapping CIDR blocks, one for each Availability Zone."
+  type        = list(string)
+  default     = ["10.0.48.0/20", "10.0.64.0/20", "10.0.80.0/20"]
+
+  validation {
+    condition     = length(var.private_subnet_cidrs) == 3
+    error_message = "Provide exactly three private subnet CIDR blocks."
+  }
+}
+
 variable "tags" {
   description = "Additional non-sensitive tags to apply to all resources."
   type        = map(string)

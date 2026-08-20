@@ -18,3 +18,15 @@ aws:
     worker:
       instance_type: t3a.small
     root_volume_size: 20
+
+  networking:
+    vpc:
+      private_subnet_values:
+        - 10.0.48.0/20
+        - 10.0.64.0/20
+        - 10.0.80.0/20
+      public_subnet_values:
+        - 10.0.0.0/20
+        - 10.0.16.0/20
+        - 10.0.32.0/20
+

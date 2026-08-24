@@ -5,7 +5,7 @@ set -euo pipefail
 # Usage: ./scripts/deploy-infra.sh <networking|compute> [plan|apply|destroy]
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-repo_root="$(cd "$script_dir/.." && pwd)"
+repo_root="$(cd "$script_dir/../.." && pwd)"
 config_file="$repo_root/config.yaml"
 
 if [[ $# -lt 1 || $# -gt 2 || ( "$1" != "networking" && "$1" != "compute" ) ]]; then
@@ -58,7 +58,8 @@ else
     "project_name": .project.name,
     "control_plane_instance_type": .aws.compute.control_plane.instance_type,
     "worker_instance_type": .aws.compute.worker.instance_type,
-    "root_volume_size": .aws.compute.root_volume_size
+    "root_volume_size": .aws.compute.root_volume_size,
+    "private_domain_name": .aws.compute.private_domain_name
   }' "$config_file" > "$generated_values_file"
 fi
 

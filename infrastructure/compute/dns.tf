@@ -24,7 +24,7 @@ resource "aws_vpc_dhcp_options" "k8s" {
   tags = merge(
     local.common_tags,
     {
-      Name = "kubernetes-dhcp-options"
+      Name = "k8s-dhcp-options"
     }
   )
 }

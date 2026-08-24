@@ -39,6 +39,7 @@ resource "aws_vpc_dhcp_options_association" "k8s" {
 }
 
 #SSH configuration for the nodes
+
 locals {
   ssh_config = join("\n", [
     for node_name, node in local.nodes : <<-SSH

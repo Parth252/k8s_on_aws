@@ -92,6 +92,16 @@ resource "aws_security_group" "nodes" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "SSH from within VPC"
+
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+
+    cidr_blocks = [var.vpc_cidr]
+  }
+
   tags = merge(local.common_tags, {
     Name = "${var.project_name}-nodes-sg"
   })

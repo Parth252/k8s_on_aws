@@ -21,6 +21,10 @@ resource "aws_route53_record" "node" {
 resource "aws_vpc_dhcp_options" "k8s" {
   domain_name = var.private_domain_name
 
+   domain_name_servers = [
+    "AmazonProvidedDNS"
+  ]
+
   tags = merge(
     local.common_tags,
     {

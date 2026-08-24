@@ -81,6 +81,15 @@ resource "aws_instance" "node" {
     delete_on_termination = true
   }
 
+  user_data = templatefile(
+  "${path.module}/user-data.sh",
+  {
+    SSH_PUBLIC_KEY = tls_private_key.cluster.public_key_openssh
+    SSH_PRIVATE_KEY = tls_private_key.cluster.private_key_openssh
+    SSH_CONFIG     = local.ssh_config
+  }
+  )
+
   tags = merge(local.common_tags, {
     Name = "${var.project_name}-${each.key}"
     Role = each.value.role

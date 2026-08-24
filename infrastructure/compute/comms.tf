@@ -37,3 +37,22 @@ resource "aws_vpc_dhcp_options_association" "k8s" {
   vpc_id          = data.terraform_remote_state.networking.outputs.vpc_id
   dhcp_options_id = aws_vpc_dhcp_options.k8s.id
 }
+
+#SSH configuration for the nodes
+locals {
+  ssh_config = join("\n", [
+    for node_name, node in local.nodes : <<-SSH
+Host ${node_name}
+    HostName ${node_name}.k8s.internal
+    User ec2-user
+    IdentityFile /home/ec2-user/.ssh/k8s_cluster
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+SSH
+  ])
+}
+
+resource "tls_private_key" "cluster" {
+  algorithm = "ED25519"
+}
+

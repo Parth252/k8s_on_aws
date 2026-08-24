@@ -59,7 +59,7 @@ else
     "control_plane_instance_type": .aws.compute.control_plane.instance_type,
     "worker_instance_type": .aws.compute.worker.instance_type,
     "root_volume_size": .aws.compute.root_volume_size,
-    "private_domain_name": .aws.compute.private_domain_name
+    "private_domain_name": .aws.dns.private_domain_name
   }' "$config_file" > "$generated_values_file"
 fi
 

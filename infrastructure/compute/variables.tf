@@ -38,6 +38,12 @@ variable "root_volume_size" {
   default     = 20
 }
 
+variable "private_domain_name" {
+  description = "Route53 zone name for the Kubernetes DNS zone."
+  type        = string
+  default     = "k8s.internal"
+}
+
 variable "tags" {
   description = "Additional non-sensitive tags to apply to all resources."
   type        = map(string)

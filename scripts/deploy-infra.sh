@@ -5,7 +5,7 @@ set -euo pipefail
 # Usage: ./scripts/deploy-infra.sh <networking|compute> [plan|apply|destroy]
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-repo_root="$(cd "$script_dir/../.." && pwd)"
+repo_root="$(cd "$script_dir/.." && pwd)"
 config_file="$repo_root/config.yaml"
 
 if [[ $# -lt 1 || $# -gt 2 || ( "$1" != "networking" && "$1" != "compute" ) ]]; then

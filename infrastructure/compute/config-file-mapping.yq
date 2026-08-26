@@ -1,0 +1,10 @@
+{
+    "aws_region": .aws.region,
+    "state_bucket": .aws.state_bucket.name,
+    "state_key_prefix": .aws.state_bucket.key_prefix,
+    "project_name": .project.name,
+    "control_plane_instance_type": .aws.compute.control_plane.instance_type,
+    "worker_instance_type": .aws.compute.worker.instance_type,
+    "root_volume_size": .aws.compute.root_volume_size,
+    "private_domain_name": .aws.dns.private_domain_name
+}

@@ -1,0 +1,6 @@
+{
+    "aws_region": .aws.region,
+    "state_bucket": .aws.state_bucket.name,
+    "state_key_prefix": .aws.state_bucket.key_prefix,
+    "project_name": .project.name
+}

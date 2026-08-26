@@ -19,14 +19,6 @@ locals {
     { for index in range(3) : "control-plane-${index + 1}" => { role = "control-plane", subnet_index = index, instance_type = var.control_plane_instance_type } },
     { for index in range(3) : "worker-${index + 1}" => { role = "worker", subnet_index = index, instance_type = var.worker_instance_type } },
   )
-
-  common_tags = merge(
-    {
-      Project   = var.project_name
-      ManagedBy = "Terraform"
-    },
-    var.tags,
-  )
 }
 
 resource "aws_iam_role" "ssm" {
@@ -43,7 +35,6 @@ resource "aws_iam_role" "ssm" {
     }]
   })
 
-  tags = local.common_tags
 }
 
 resource "aws_iam_role_policy_attachment" "ssm" {
@@ -90,8 +81,8 @@ resource "aws_instance" "node" {
   }
   )
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${each.key}"
     Role = each.value.role
-  })
+  }
 }

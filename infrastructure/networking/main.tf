@@ -2,32 +2,22 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-locals {
-  common_tags = merge(
-    {
-      Project   = var.project_name
-      ManagedBy = "Terraform"
-    },
-    var.tags,
-  )
-}
-
 resource "aws_vpc" "cluster" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-vpc"
-  })
+  }
 }
 
 resource "aws_internet_gateway" "cluster" {
   vpc_id = aws_vpc.cluster.id
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-igw"
-  })
+  }
 }
 
 resource "aws_subnet" "public" {
@@ -38,10 +28,10 @@ resource "aws_subnet" "public" {
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-public-${count.index + 1}"
     Tier = "public"
-  })
+  }
 }
 
 resource "aws_subnet" "private" {
@@ -51,10 +41,10 @@ resource "aws_subnet" "private" {
   cidr_block        = var.private_subnet_cidrs[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-private-${count.index + 1}"
     Tier = "private"
-  })
+  }
 }
 
 resource "aws_route_table" "public" {
@@ -65,9 +55,9 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.cluster.id
   }
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-public-rt"
-  })
+  }
 }
 
 resource "aws_route_table_association" "public" {
@@ -102,7 +92,7 @@ resource "aws_security_group" "nodes" {
     cidr_blocks = [var.vpc_cidr]
   }
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-nodes-sg"
-  })
+  }
 }

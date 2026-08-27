@@ -55,4 +55,4 @@ override.tf.json
 # .idea/
 # .vscode/
 
-todo.txt
+/todo.txt

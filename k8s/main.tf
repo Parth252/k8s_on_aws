@@ -32,6 +32,7 @@ resource "aws_s3_object" "scripts" {
 }
 
 resource "aws_ssm_association" "k8s_bootstrap" {
+  depends_on = [aws_s3_object.scripts]
   for_each = data.terraform_remote_state.compute.outputs.node_instance_ids
 
   name = "AWS-RunShellScript"

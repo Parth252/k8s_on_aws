@@ -1,0 +1,2 @@
+variablize node count
+ssm variablize scirpts bucket name

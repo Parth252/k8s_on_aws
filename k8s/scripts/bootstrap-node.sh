@@ -10,6 +10,7 @@ echo "========================================"
 echo "Bootstrap started: $(date)"
 echo "========================================"
 
+SCRIPTS_BUCKET=$1
 SCRIPT_DIR="/opt/kubernetes/scripts"
 
 mkdir -p "$SCRIPT_DIR"

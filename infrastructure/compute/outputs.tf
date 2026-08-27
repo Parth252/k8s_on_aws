@@ -7,3 +7,8 @@ output "node_private_ips" {
   description = "Private IP addresses, keyed by node name."
   value       = { for name, instance in aws_instance.node : name => instance.private_ip }
 }
+
+output "scirpts_bucket_name" {
+  description = "S3 bucket name for storing scripts."
+  value       = aws_s3_bucket.scripts.bucket
+}

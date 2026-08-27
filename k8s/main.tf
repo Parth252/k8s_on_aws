@@ -10,19 +10,10 @@ data "terraform_remote_state" "compute" {
   }
 }
 
-#s3 bucket for storing scirpts
-resource "random_id" "bucket_suffix" {
-  byte_length = 4
-}
-
-resource "aws_s3_bucket" "scripts" {
-  bucket = "${var.project_name}-scripts-${random_id.bucket_suffix.hex}"
-}
-
 resource "aws_s3_object" "scripts" {
   for_each = fileset("${path.module}/scripts", "**")
 
-  bucket = aws_s3_bucket.scripts.bucket
+  bucket = data.terraform_remote_state.compute.outputs.scripts_bucket_name
 
   key = "scripts/${each.value}"
 

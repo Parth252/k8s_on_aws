@@ -86,3 +86,12 @@ resource "aws_instance" "node" {
     Role = each.value.role
   }
 }
+
+#s3 bucket for storing scirpts
+resource "random_id" "bucket_suffix" {
+  byte_length = 4
+}
+
+resource "aws_s3_bucket" "scripts" {
+  bucket = "${var.project_name}-scripts-${random_id.bucket_suffix.hex}"
+}

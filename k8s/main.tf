@@ -10,15 +10,25 @@ data "terraform_remote_state" "compute" {
   }
 }
 
-#s3 buucket for storing scirpts
-resource "aws_s3_bucket" "scripts" {
-  bucket = "${var.project_name}-scripts"
+#s3 bucket for storing scirpts
+resource "random_id" "bucket_suffix" {
+  byte_length = 4
 }
 
-resource "aws_s3_bucket_object" "bootstrap_script" {
+resource "aws_s3_bucket" "scripts" {
+  bucket = "${var.project_name}-scripts-${random_id.bucket_suffix.hex}"
+}
+
+resource "aws_s3_object" "scripts" {
+  for_each = fileset("${path.module}/scripts", "**")
+
   bucket = aws_s3_bucket.scripts.bucket
-  key    = "bootstrap-node.sh"
-  source = "${path.module}/scripts/bootstrap-node.sh"
+
+  key = "scripts/${each.value}"
+
+  source = "${path.module}/scripts/${each.value}"
+
+  etag = filemd5("${path.module}/scripts/${each.value}")
 }
 
 resource "aws_ssm_association" "k8s_bootstrap" {

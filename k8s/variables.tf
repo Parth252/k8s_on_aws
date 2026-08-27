@@ -28,6 +28,16 @@ variable "tags" {
   default     = {}
 }
 
+locals {
+  common_tags = merge(
+    {
+      Project   = var.project_name
+      ManagedBy = "Terraform"
+      stack     = "k8s"
+    },
+    var.tags,
+  )
+}
 #params
 
 variable "k8s_version" {

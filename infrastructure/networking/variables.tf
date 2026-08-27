@@ -59,6 +59,7 @@ locals {
     {
       Project   = var.project_name
       ManagedBy = "Terraform"
+      stack     = "infrastructure.networking"  
     },
     var.tags,
   )

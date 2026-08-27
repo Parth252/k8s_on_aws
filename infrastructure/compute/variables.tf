@@ -55,6 +55,7 @@ locals {
     {
       Project   = var.project_name
       ManagedBy = "Terraform"
+      stack     = "infrastructure.compute"  
     },
     var.tags,
   )

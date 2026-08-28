@@ -74,34 +74,6 @@ resource "aws_iam_role_policy_attachment" "s3_read" {
   policy_arn = aws_iam_policy.s3_read.arn
 }
 
-resource "aws_iam_policy" "ssm_parameters_read" {
-  name        = "${var.project_name}-ssm-parameters-read"
-  description = "Allow EC2 nodes to read project SSM parameters"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-
-    Statement = [
-      {
-        Effect = "Allow"
-
-        Action = [
-          "ssm:GetParameter",
-          "ssm:GetParameters",
-          "ssm:GetParametersByPath"
-        ]
-
-        Resource = "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/${var.project_name}/*"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ssm_parameters_read" {
-  role       = aws_iam_role.ssm.name
-  policy_arn = aws_iam_policy.ssm_parameters_read.arn
-}
-
 resource "aws_instance" "node" {
   for_each = local.nodes
 
@@ -132,7 +104,9 @@ resource "aws_instance" "node" {
   {
     SSH_PUBLIC_KEY = tls_private_key.cluster.public_key_openssh
     SSH_PRIVATE_KEY = tls_private_key.cluster.private_key_openssh
-    SSH_CONFIG     = local.ssh_config
+    SSH_CONFIG     = local.ssh_config,
+    PROJECT_NAME   = var.project_name,
+    SCRIPTS_BUCKET  = aws_s3_bucket.scripts.bucket,
   }
   )
 
@@ -149,10 +123,4 @@ resource "random_id" "bucket_suffix" {
 
 resource "aws_s3_bucket" "scripts" {
   bucket = "${var.project_name}-scripts-${random_id.bucket_suffix.hex}"
-}
-
-resource "aws_ssm_parameter" "scripts_bucket_name" {
-  name  = "/${var.project_name}/scripts_bucket_name"
-  type  = "String"
-  value = aws_s3_bucket.scripts.bucket
 }

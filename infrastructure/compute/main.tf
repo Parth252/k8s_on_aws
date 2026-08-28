@@ -16,8 +16,8 @@ data "aws_ssm_parameter" "amazon_linux_2023" {
 
 locals {
   nodes = merge(
-    { for index in range(3) : "control-plane-${index + 1}" => { role = "control-plane", subnet_index = index, instance_type = var.control_plane_instance_type } },
-    { for index in range(3) : "worker-${index + 1}" => { role = "worker", subnet_index = index, instance_type = var.worker_instance_type } },
+    { for index in range(var.control_plane_count) : "control-plane-${index + 1}" => { role = "control-plane", subnet_index = index, instance_type = var.control_plane_instance_type } },
+    { for index in range(var.worker_count) : "worker-${index + 1}" => { role = "worker", subnet_index = index, instance_type = var.worker_instance_type } },
   )
 }
 

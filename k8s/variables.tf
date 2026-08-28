@@ -44,15 +44,3 @@ variable "k8s_version" {
   description = "Kubernetes version to deploy."
   type        = string
 }
-
-variable "control_plane_count" {
-  description = "Number of control plane nodes to deploy."
-  type        = number
-  default     = 1
-}
-
-variable "worker_count" {
-  description = "Number of worker nodes to deploy."
-  type        = number
-  default     = 2
-}

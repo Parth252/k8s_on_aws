@@ -19,7 +19,7 @@ aws:
     control_plane:
       instance_type: t3a.small
       node_count: 3
-    worker:
+    worker_plane:
       instance_type: t3a.small
       node_count: 3
     root_volume_size: 20

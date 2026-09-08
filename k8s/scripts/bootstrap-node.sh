@@ -9,8 +9,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 echo "========================================"
 echo "Bootstrap started: $(date)"
 echo "========================================"
-
-SCRIPTS_BUCKET=$1
+source /etc/k8s_on_aws/config
 SCRIPT_DIR="/opt/kubernetes/scripts"
 
 mkdir -p "$SCRIPT_DIR"

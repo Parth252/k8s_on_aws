@@ -60,10 +60,14 @@ resource "aws_iam_policy" "s3_read" {
         Effect = "Allow"
 
         Action = [
-          "s3:GetObject"
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetBucketVersioning",
+          "s3:ListObjectsV2",
+          "s3:ListBucket"
         ]
 
-        Resource = "${aws_s3_bucket.scripts.arn}/*"
+        Resource = ["${aws_s3_bucket.scripts.arn}/*", "${aws_s3_bucket.scripts.arn}"]
       }
     ]
   })

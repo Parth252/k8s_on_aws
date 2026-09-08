@@ -26,8 +26,8 @@ variable "control_plane_instance_type" {
   default     = "t3a.small"
 }
 
-variable "worker_instance_type" {
-  description = "Instance type for every worker node."
+variable "worker_plane_instance_type" {
+  description = "Instance type for every worker plane node."
   type        = string
   default     = "t3a.small"
 }
@@ -69,7 +69,7 @@ variable "control_plane_count" {
   default     = 1
 }
 
-variable "worker_count" {
+variable "worker_plane_count" {
   description = "Number of worker nodes to deploy."
   type        = number
   default     = 1

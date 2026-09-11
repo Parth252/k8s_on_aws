@@ -18,7 +18,7 @@ action="${2:-plan}"
 generated_values_file="$repo_root/.generated/$stack.values.tfvars.json"
 
 case "$action" in
-  plan|apply|destroy) ;;
+  plan|apply|destroy|auto-approve) ;;
   *)
     echo "Action must be plan, apply, or destroy." >&2
     exit 1
@@ -62,4 +62,13 @@ terraform -chdir="$stack_dir" init \
   -backend-config="encrypt=true" \
   -backend-config="use_lockfile=true"
 
-terraform -chdir="$stack_dir" "$action" -var-file="$generated_values_file"
+terraform_args=(
+  -var-file="$generated_values_file"
+)
+
+if [[ "$action" == "auto-approve" ]]; then
+  action="apply"
+  terraform_args+=("-auto-approve")
+fi
+
+terraform -chdir="$stack_dir" "$action" "${terraform_args[@]}"

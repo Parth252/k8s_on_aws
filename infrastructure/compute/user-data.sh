@@ -35,7 +35,6 @@ echo "SSH cluster configuration complete."
 
 echo "========================================"
 
-echo "Initializing project directories and downloading scripts from S3 bucket: ${SCRIPTS_BUCKET}"
 mkdir -p /etc/k8s_on_aws
 touch /etc/k8s_on_aws/config
 cat > /etc/k8s_on_aws/config <<EOF

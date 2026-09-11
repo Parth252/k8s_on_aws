@@ -16,7 +16,7 @@ mkdir -p "$SCRIPT_DIR"
 
 aws s3 cp "s3://${SCRIPTS_BUCKET}/scripts/" "$SCRIPT_DIR/" --recursive
 
-chmod +x "$SCRIPT_DIR"/*.sh
+find "$SCRIPT_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 "$SCRIPT_DIR/installation/kubectl.sh"
 # "$SCRIPT_DIR/installation/containerd.sh"s

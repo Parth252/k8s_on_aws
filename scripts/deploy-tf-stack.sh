@@ -9,7 +9,7 @@ repo_root="$(cd "$script_dir/.." && pwd)"
 config_file="$repo_root/config.yaml"
 
 if [[ $# -lt 1 || $# -gt 2 || ( "$1" != "networking" && "$1" != "compute" && "$1" != "k8s" ) ]]; then
-  echo "Usage: $0 <networking|compute|k8s> [plan|apply|destroy]" >&2
+  echo "Usage: $0 <networking|compute|k8s> [plan|apply|destroy|auto-approve]" >&2
   exit 1
 fi
 
@@ -20,7 +20,7 @@ generated_values_file="$repo_root/.generated/$stack.values.tfvars.json"
 case "$action" in
   plan|apply|destroy|auto-approve) ;;
   *)
-    echo "Action must be plan, apply, or destroy." >&2
+    echo "Action must be plan, apply, auto-approve or destroy." >&2
     exit 1
     ;;
 esac

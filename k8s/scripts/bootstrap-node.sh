@@ -19,4 +19,4 @@ aws s3 cp "s3://${SCRIPTS_BUCKET}/scripts/" "$SCRIPT_DIR/" --recursive
 find "$SCRIPT_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 
 "$SCRIPT_DIR/installation/kubectl.sh"
-# "$SCRIPT_DIR/installation/containerd.sh"s
+# "$SCRIPT_DIR/installation/containerd.sh"

@@ -9,7 +9,7 @@ repo_root="$(cd "$script_dir/.." && pwd)"
 config_file="$repo_root/config.yaml"
 
 if [[ $# -lt 1 || $# -gt 2 || ( "$1" != "networking" && "$1" != "compute" && "$1" != "k8s" ) ]]; then
-  echo "Usage: $0 <networking|compute|k8s> [plan|apply|destroy|auto-approve]" >&2
+  echo "Usage: $0 <networking|compute|k8s> [plan|apply|destroy|auto-apply|auto-destroy]" >&2
   exit 1
 fi
 
@@ -18,9 +18,9 @@ action="${2:-plan}"
 generated_values_file="$repo_root/.generated/$stack.values.tfvars.json"
 
 case "$action" in
-  plan|apply|destroy|auto-approve) ;;
+  plan|apply|destroy|auto-apply|auto-destroy) ;;
   *)
-    echo "Action must be plan, apply, auto-approve or destroy." >&2
+    echo "Action must be plan, apply, destroy, auto-apply, or auto-destroy." >&2
     exit 1
     ;;
 esac
@@ -66,8 +66,11 @@ terraform_args=(
   -var-file="$generated_values_file"
 )
 
-if [[ "$action" == "auto-approve" ]]; then
+if [[ "$action" == "auto-apply" ]]; then
   action="apply"
+  terraform_args+=("-auto-apply")
+elif [[ "$action" == "auto-destroy" ]]; then
+  action="destroy"
   terraform_args+=("-auto-approve")
 fi
 

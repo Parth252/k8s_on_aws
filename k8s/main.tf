@@ -10,6 +10,17 @@ data "terraform_remote_state" "compute" {
   }
 }
 
+resource "aws_s3_object" "config" {
+
+  bucket = data.terraform_remote_state.compute.outputs.scripts_bucket_name
+
+  key = "config.yaml"
+
+  source = "${path.module}/../config.yaml"
+
+  etag = filemd5("${path.module}/../config.yaml")
+}
+
 resource "aws_s3_object" "scripts" {
   for_each = fileset("${path.module}/scripts", "**")
 

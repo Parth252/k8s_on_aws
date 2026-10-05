@@ -1,3 +1,5 @@
+#!/bin/bash
+set -euo pipefail
 ./scripts/deploy-tf-stack.sh k8s destroy
 ./scripts/deploy-tf-stack.sh compute destroy
 ./scripts/deploy-tf-stack.sh networking destroy

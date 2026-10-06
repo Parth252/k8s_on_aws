@@ -1,23 +1,30 @@
 #!/bin/bash
 
 set -euo pipefail
-
 LOG_FILE="/var/log/bootstrap-node.log"
-CONFIG_FILE="/etc/k8s_on_aws/config.yaml"
 exec > >(tee -a "$LOG_FILE") 2>&1
+yum install -y jq yq
 
 echo "========================================"
 echo "Bootstrap started: $(date)"
 echo "========================================"
+
+echo "Configuring environment"
+
 source /etc/k8s_on_aws/infra-config
-SCRIPT_DIR="/opt/kubernetes/scripts"
+SCRIPT_DIR="/opt/k8s_on_aws/scripts"
+CONFIG_FILE="/etc/k8s_on_aws/config.yaml"
 
 mkdir -p "$SCRIPT_DIR"
-
 aws s3 cp "s3://${SCRIPTS_BUCKET}/scripts/" "$SCRIPT_DIR/" --recursive
 aws s3 cp "s3://${SCRIPTS_BUCKET}/config.yaml" "$CONFIG_FILE"
-
 find "$SCRIPT_DIR" -type f -name "*.sh" -exec chmod +x {} \;
+echo "Environment configuration complete"
 
-"$SCRIPT_DIR/installation/kubectl.sh"
-# "$SCRIPT_DIR/installation/containerd.sh"
+echo "installations"
+
+K8s_VERSION="$(yq -er '.k8s.version' "$CONFIG_FILE")"
+
+$SCRIPT_DIR/installation/kubectl.sh $K8s_VERSION
+# $SCRIPT_DIR/installation/containerd.sh
+/opt/k8s_on_aws/scripts/installation/kubectl.sh v1.36.0

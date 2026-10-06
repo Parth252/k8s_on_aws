@@ -36,8 +36,8 @@ echo "SSH cluster configuration complete."
 echo "========================================"
 
 mkdir -p /etc/k8s_on_aws
-touch /etc/k8s_on_aws/config
-cat > /etc/k8s_on_aws/config <<EOF
+touch /etc/k8s_on_aws/infra-config
+cat > /etc/k8s_on_aws/infra-config <<EOF
 SCRIPTS_BUCKET="${SCRIPTS_BUCKET}"
 EOF
 

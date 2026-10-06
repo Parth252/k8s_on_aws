@@ -68,7 +68,7 @@ terraform_args=(
 
 if [[ "$action" == "auto-apply" ]]; then
   action="apply"
-  terraform_args+=("-auto-apply")
+  terraform_args+=("-auto-approve")
 elif [[ "$action" == "auto-destroy" ]]; then
   action="destroy"
   terraform_args+=("-auto-approve")

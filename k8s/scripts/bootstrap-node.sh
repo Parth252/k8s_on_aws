@@ -3,11 +3,14 @@
 set -euo pipefail
 LOG_FILE="/var/log/bootstrap-node.log"
 exec > >(tee -a "$LOG_FILE") 2>&1
-yum install -y jq yq
 
 echo "========================================"
 echo "Bootstrap started: $(date)"
 echo "========================================"
+
+echo "managing yum"
+
+yum install -y jq yq
 
 echo "Configuring environment"
 

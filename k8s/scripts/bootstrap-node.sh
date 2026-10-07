@@ -29,5 +29,5 @@ echo "installations"
 K8s_VERSION="$(yq -er '.k8s.version' "$CONFIG_FILE")"
 
 $SCRIPT_DIR/installation/kubectl.sh $K8s_VERSION
+$SCRIPT_DIR/installation/kubeadm.sh $K8s_VERSION
 # $SCRIPT_DIR/installation/containerd.sh
-/opt/k8s_on_aws/scripts/installation/kubectl.sh v1.36.0

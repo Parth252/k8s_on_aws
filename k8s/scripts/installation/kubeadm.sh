@@ -1,3 +1,4 @@
+#!/bin/bash
 K8S_VERSION="$1"
 echo "Installing kubeadm version $K8S_VERSION"
 

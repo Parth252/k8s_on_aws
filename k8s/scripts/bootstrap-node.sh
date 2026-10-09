@@ -27,7 +27,8 @@ echo "Environment configuration complete"
 echo "installations"
 
 K8s_VERSION="$(yq -er '.k8s.version' "$CONFIG_FILE")"
+CONTAINERD_VERSION="$(yq -er '.k8s.containerD.version' "$CONFIG_FILE")"
 
 $SCRIPT_DIR/installation/kubectl.sh $K8s_VERSION
 $SCRIPT_DIR/installation/kubeadm.sh $K8s_VERSION
-# $SCRIPT_DIR/installation/containerd.sh
+$SCRIPT_DIR/installation/containerd.sh $CONTAINERD_VERSION

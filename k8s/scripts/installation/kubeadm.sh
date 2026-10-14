@@ -1,15 +1,13 @@
 #!/bin/bash
+set -euo pipefail
 K8S_VERSION="$1"
+echo "============================================================="
 echo "Installing kubeadm version $K8S_VERSION"
 
-cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/${K8S_VERSION}/rpm/
-enabled=1
-gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/${K8S_VERSION}/rpm/repodata/repomd.xml.key
-EOF
+curl -fL \
+  "https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/amd64/kubeadm" \
+  -o /tmp/kubeadm
 
-sudo dnf install -y kubeadm
+sudo install -m 755 /tmp/kubeadm /usr/local/bin/kubeadm
+
 kubeadm version

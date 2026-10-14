@@ -9,3 +9,5 @@ curl -fL \
   -o /tmp/runc
 
 sudo install -m 755 /tmp/runc /usr/local/sbin/runc
+
+echo "runC version: $(runc --version)"

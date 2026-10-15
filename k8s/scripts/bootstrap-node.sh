@@ -34,3 +34,4 @@ $SCRIPT_DIR/installation/kubectl.sh $K8s_VERSION
 $SCRIPT_DIR/installation/kubeadm.sh $K8s_VERSION
 $SCRIPT_DIR/installation/containerD.sh $CONTAINERD_VERSION
 $SCRIPT_DIR/installation/runC.sh $RUNC_VERSION
+$SCRIPT_DIR/installation/cni.sh

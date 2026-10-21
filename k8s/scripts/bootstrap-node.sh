@@ -26,7 +26,7 @@ echo "Environment configuration complete"
 
 echo "installations"
 
-K8s_VERSION="$(yq -er '.k8s.version' "$CONFIG_FILE")"
+K8s_VERSION="v$(yq -er '.k8s.version' "$CONFIG_FILE")"
 CONTAINERD_VERSION="$(yq -er '.k8s.CRI.containerD.version' "$CONFIG_FILE")"
 RUNC_VERSION="$(yq -er '.k8s.CRI.runC.version' "$CONFIG_FILE")"
 

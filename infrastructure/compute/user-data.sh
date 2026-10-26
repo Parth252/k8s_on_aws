@@ -39,6 +39,7 @@ mkdir -p /etc/k8s_on_aws
 touch /etc/k8s_on_aws/infra-config
 cat > /etc/k8s_on_aws/infra-config <<EOF
 SCRIPTS_BUCKET="${SCRIPTS_BUCKET}"
+NODE_TYPE="${NODE_TYPE}"
 EOF
 
 echo "========================================"

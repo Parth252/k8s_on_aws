@@ -111,6 +111,7 @@ resource "aws_instance" "node" {
     SSH_CONFIG     = local.ssh_config,
     PROJECT_NAME   = var.project_name,
     SCRIPTS_BUCKET  = aws_s3_bucket.scripts.bucket,
+    NODE_TYPE      = each.value.role
   }
   )
 

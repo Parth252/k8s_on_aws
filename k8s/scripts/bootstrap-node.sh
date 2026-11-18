@@ -12,6 +12,7 @@ echo "managing yum"
 
 yum install -y jq yq
 
+echo "========================================"
 echo "Configuring environment"
 
 source /etc/k8s_on_aws/infra-config
@@ -23,7 +24,9 @@ aws s3 cp "s3://${SCRIPTS_BUCKET}/scripts/" "$SCRIPT_DIR/" --recursive
 aws s3 cp "s3://${SCRIPTS_BUCKET}/config.yaml" "$CONFIG_FILE"
 find "$SCRIPT_DIR" -type f -name "*.sh" -exec chmod +x {} \;
 echo "Environment configuration complete"
+echo "========================================"
 
+echo "========================================"
 echo "installations"
 
 K8s_VERSION="v$(yq -er '.k8s.version' "$CONFIG_FILE")"
@@ -48,3 +51,6 @@ elif [[ "$NODE_TYPE" == "worker" ]]; then
 else
     echo "Unknown node type: $NODE_TYPE"    
 fi
+
+echo "installations complete"
+echo "========================================"

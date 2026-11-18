@@ -54,3 +54,12 @@ fi
 
 echo "installations complete"
 echo "========================================"
+
+echo "========================================"
+echo "Configuring master nodes"
+
+if [[ "$NODE_TYPE" == "control-plane" ]]; then
+    $SCRIPT_DIR/configuration/control-plane.sh
+
+echo "Master configuration complete"
+echo "========================================"

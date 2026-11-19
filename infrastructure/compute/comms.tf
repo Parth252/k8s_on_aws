@@ -57,3 +57,11 @@ resource "tls_private_key" "cluster" {
   algorithm = "ED25519"
 }
 
+resource "aws_lb" "k8s-api-server" {
+  name               = "k8s-api-server"
+  internal           = false
+  load_balancer_type = "network"
+  subnets            = [for subnet in data.terraform_remote_state.networking.outputs.public_subnets : subnet.id]
+
+  enable_deletion_protection = false
+}

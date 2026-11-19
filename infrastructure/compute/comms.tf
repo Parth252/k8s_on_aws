@@ -57,6 +57,7 @@ resource "tls_private_key" "cluster" {
   algorithm = "ED25519"
 }
 
+#Load Balancer for the Kubernetes API server
 resource "aws_lb" "k8s-api-server" {
   name               = "k8s-api-server"
   internal           = false
@@ -65,3 +66,18 @@ resource "aws_lb" "k8s-api-server" {
 
   enable_deletion_protection = false
 }
+
+# resource "aws_lb_listener" "front_end" {
+#   load_balancer_arn = aws_lb.k8s-api-server.arn
+#   port              = "443"
+#   protocol          = "TLS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   certificate_arn   = ?
+#   alpn_policy       = "HTTP2Preferred"
+
+#   default_action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.front_end.arn
+#   }
+# }
+

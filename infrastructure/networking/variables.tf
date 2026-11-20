@@ -54,6 +54,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "cluster_ingress_cidr_blocks" {
+  description = "List of CIDR blocks allowed to access the Kubernetes API server."
+  type        = list(string)
+}
+
 locals {
   common_tags = merge(
     {

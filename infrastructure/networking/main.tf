@@ -107,7 +107,7 @@ resource "aws_security_group" "k8s-api-lb-sg" {
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"
-    cidr_blocks = [??]
+    cidr_blocks = var.cluster_ingress_cidr_blocks
   }
 
   egress {

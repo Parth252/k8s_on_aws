@@ -3,4 +3,5 @@
     "state_bucket": .aws.state_bucket.name,
     "state_key_prefix": .aws.state_bucket.key_prefix,
     "project_name": .project.name
+    "cluster_ingress_cidr_blocks": .aws.cluster_network.allowed_cidr_blocks
 }

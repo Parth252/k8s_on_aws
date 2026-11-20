@@ -96,3 +96,25 @@ resource "aws_security_group" "nodes" {
     Name = "${var.project_name}-nodes-sg"
   }
 }
+
+resource "aws_security_group" "k8s-api-lb-sg" {
+  name_prefix = "${var.project_name}-k8s-api-lb-"
+  description = "Security group for Kubernetes API server load balancer"
+  vpc_id      = aws_vpc.cluster.id
+
+  ingress {
+    description = "Allow Kubernetes API access"
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = [??]
+  }
+
+  egress {
+    description = "Forward traffic to Kubernetes API servers"
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.cluster.cidr_block]
+  }
+}

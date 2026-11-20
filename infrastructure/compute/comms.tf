@@ -72,6 +72,8 @@ resource "aws_lb" "k8s-api-lb" {
   load_balancer_type = "network"
   subnets            = data.terraform_remote_state.networking.outputs.public_subnet_ids
   enable_deletion_protection = false
+  security_groups = [ data.terraform_remote_state.networking.outputs.k8s_api_lb_sg_id]
+
 }
 
 resource "aws_lb_listener" "k8s-api-listener" {

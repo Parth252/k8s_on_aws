@@ -12,3 +12,8 @@ output "node_security_group_id" {
   description = "Security group shared by all cluster nodes."
   value       = aws_security_group.nodes.id
 }
+
+output "k8s_api_lb_sg_id" {
+  description = "Security group for the Kubernetes API server load balancer."
+  value       = aws_security_group.k8s-api-lb-sg.id
+}

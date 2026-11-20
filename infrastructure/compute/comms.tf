@@ -58,7 +58,15 @@ resource "tls_private_key" "cluster" {
 }
 
 #Load Balancer for the Kubernetes API server
-resource "aws_lb" "k8s-api-server" {
+locals {
+  control_plane_nodes = {
+    for name, instance in aws_instance.node :
+    name => instance
+    if startswith(name, "control-plane-")
+  }
+}
+
+resource "aws_lb" "k8s-api-lb" {
   name               = "k8s-api-server"
   internal           = false
   load_balancer_type = "network"
@@ -66,17 +74,37 @@ resource "aws_lb" "k8s-api-server" {
   enable_deletion_protection = false
 }
 
-# resource "aws_lb_listener" "front_end" {
-#   load_balancer_arn = aws_lb.k8s-api-server.arn
-#   port              = "443"
-#   protocol          = "TLS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = ?
-#   alpn_policy       = "HTTP2Preferred"
+resource "aws_lb_listener" "k8s-api-listener" {
+  load_balancer_arn = aws_lb.k8s-api-lb.arn
 
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.front_end.arn
-#   }
-# }
+  port     = 6443
+  protocol = "TCP"
 
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.k8s_api_target_group.arn
+  }
+}
+
+resource "aws_lb_target_group" "k8s_api_target_group" {
+  name        = "k8s-api-server"
+  port        = 6443
+  protocol    = "TCP"
+  target_type = "instance"
+  vpc_id      = data.terraform_remote_state.networking.outputs.vpc_id
+
+  health_check {
+    protocol = "HTTPS"
+    port     = "traffic-port"
+    path     = "/readyz"
+    matcher  = "200"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "control_plane" {
+  for_each = local.control_plane_nodes
+
+  target_group_arn = aws_lb_target_group.k8s_api_target_group.arn
+  target_id        = each.value.id
+  port             = 6443
+}
